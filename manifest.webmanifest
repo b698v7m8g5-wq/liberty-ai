@@ -1,0 +1,9 @@
+{
+  "name": "LIBERTY AI",
+  "short_name": "LIBERTY AI",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0c0c14",
+  "theme_color": "#10101a",
+  "description": "Tu asistente personal"
+}

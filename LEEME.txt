@@ -1,0 +1,14 @@
+LIBERTY AI - prototipo móvil
+
+Este paquete contiene una PWA (aplicación web instalable) inicial.
+No es todavía una IA conectada: muestra la interfaz y guarda mensajes localmente.
+
+Para instalar en iPhone:
+1. Publica estos archivos en un alojamiento HTTPS estático.
+2. Abre la dirección en Safari.
+3. Pulsa Compartir > Añadir a pantalla de inicio > Añadir.
+
+Para convertirla en una IA real:
+- Crear un backend seguro.
+- Conectar un proveedor/modelo de IA.
+- Guardar las claves API solo en el servidor, nunca en el HTML o en el iPhone.

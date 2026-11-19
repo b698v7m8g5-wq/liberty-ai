@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10101a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LIBERTY AI">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>LIBERTY AI</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0c0c14;--panel:#171725;--line:#2a2a40;--accent:#8b72ff;--muted:#aaa9bd}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#242044 0,#0c0c14 48%);color:#f7f5ff;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    .wrap{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 16px calc(18px + env(safe-area-inset-bottom))}
+    header{padding:24px 4px 18px;display:flex;align-items:center;gap:12px}
+    .logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#9a7bff,#3b8dff);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #6d5cff55}
+    h1{font-size:21px;letter-spacing:2px;margin:0} .sub{color:var(--muted);font-size:12px;margin-top:4px}
+    .notice{background:#211e34;border:1px solid #514477;border-radius:14px;padding:12px 14px;color:#d8d1ff;font-size:13px;line-height:1.45;margin:4px 0 16px}
+    #chat{display:flex;flex-direction:column;gap:12px;min-height:48vh;padding:8px 0 18px}
+    .msg{max-width:88%;padding:13px 15px;border-radius:17px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+    .bot{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:5px}
+    .user{align-self:flex-end;background:linear-gradient(135deg,#6653ce,#416ac7);border-bottom-right-radius:5px}
+    .composer{position:sticky;bottom:0;background:#0c0c14eF;padding:10px 0 calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px}
+    textarea{resize:none;flex:1;min-height:48px;max-height:130px;border:1px solid var(--line);border-radius:15px;background:#171725;color:white;padding:13px;font:inherit;outline:none}
+    button{border:0;border-radius:14px;background:linear-gradient(135deg,#8b72ff,#557cf5);color:white;font-weight:700;padding:0 17px;min-width:54px}
+    .tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+    .chip{border:1px solid var(--line);background:#171725;color:#ddd9f5;padding:9px 12px;border-radius:99px;font-size:12px}
+    footer{text-align:center;color:#77758d;font-size:11px;padding:8px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header><div class="logo">✦</div><div><h1>LIBERTY AI</h1><div class="sub">Tu asistente personal · versión inicial</div></div></header>
+  <div class="notice"><b>Prototipo inicial:</b> esta versión instala la interfaz en tu iPhone y guarda el historial en este dispositivo. Para obtener respuestas reales de IA habrá que conectar un servicio de IA; no introduzcas contraseñas ni datos privados aquí.</div>
+  <div class="tools">
+    <button class="chip" type="button" onclick="quick('Ayúdame a organizar mis tareas')">Organización</button>
+    <button class="chip" type="button" onclick="quick('Dame ideas para un proyecto')">Ideas</button>
+    <button class="chip" type="button" onclick="quick('Explícame cómo crear una aplicación')">Programación</button>
+  </div>
+  <main id="chat" aria-live="polite">
+    <div class="msg bot">¡Hola! Soy LIBERTY AI. Esta es tu primera versión móvil. Puedes probar la interfaz y personalizarla; todavía no estoy conectada a un modelo de inteligencia artificial.</div>
+  </main>
+  <form class="composer" id="form"><textarea id="prompt" rows="1" placeholder="Escribe tu mensaje..." aria-label="Escribe tu mensaje"></textarea><button aria-label="Enviar">➤</button></form>
+  <footer>LIBERTY AI · prototipo local · Tus mensajes se guardan en este navegador</footer>
+</div>
+<script>
+const chat=document.getElementById('chat'), input=document.getElementById('prompt');
+function add(text,who){const el=document.createElement('div');el.className='msg '+who;el.textContent=text;chat.appendChild(el);chat.scrollTop=chat.scrollHeight;return el}
+function quick(t){input.value=t;input.focus()}
+document.getElementById('form').addEventListener('submit',e=>{
+ e.preventDefault();const t=input.value.trim();if(!t)return;
+ add(t,'user');input.value='';
+ const history=JSON.parse(localStorage.getItem('liberty_history')||'[]');history.push({role:'user',content:t,at:Date.now()});localStorage.setItem('liberty_history',JSON.stringify(history));
+ add('He recibido tu mensaje. Para responder con inteligencia artificial real, el siguiente paso es conectar LIBERTY AI a un modelo mediante un servidor seguro. Esta versión es todavía una demostración de la aplicación.','bot');
+});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
